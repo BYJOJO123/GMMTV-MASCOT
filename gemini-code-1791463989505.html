@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>我對孫孫們的印象！| GMMTV Mascot</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #F7F7F7;
+      --card-bg: #FFFFFF;
+      --green: #a6fba5;
+      --black: #111111;
+      --gray-light: #EEEEEE;
+      --text-muted: #888888;
+      --text-disclaimer: #AAAAAA;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', 'Noto Sans TC', -apple-system, sans-serif;
+      font-weight: 400;
+      -webkit-tap-highlight-color: transparent;
+      border-radius: 0 !important;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--black);
+      padding: 24px 16px 40px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .app-shell {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .header-card {
+      background: var(--card-bg);
+      padding: 26px 22px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .badge-pill {
+      align-self: flex-start;
+      background: var(--green);
+      color: var(--black);
+      font-size: 11px;
+      font-weight: 500;
+      padding: 4px 10px;
+      letter-spacing: 0.5px;
+    }
+
+    .header-card h1 {
+      font-size: 24px;
+      font-weight: 500;
+      letter-spacing: -0.3px;
+      color: var(--black);
+      margin-top: 2px;
+    }
+
+    .header-card p {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .config-box {
+      background: var(--card-bg);
+      padding: 12px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .input-clean {
+      border: none;
+      background: var(--gray-light);
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--black);
+      outline: none;
+      width: 100%;
+    }
+
+    .pool-card {
+      background: var(--card-bg);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .pool-title {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .chips-flow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      max-height: 220px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .chip-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--gray-light);
+      padding: 6px 12px 6px 6px;
+      font-size: 13px;
+      font-weight: 400;
+      cursor: pointer;
+      border: none;
+      color: var(--black);
+      transition: background 0.15s;
+    }
+
+    .chip-item:hover {
+      background: var(--green);
+    }
+
+    .chip-item img {
+      width: 24px;
+      height: 24px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .list-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .impression-card {
+      background: var(--card-bg);
+      padding: 14px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .avatar-wrapper {
+      width: 72px;
+      height: 72px;
+      min-width: 72px;
+      background: var(--gray-light);
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .avatar-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .avatar-hover {
+      position: absolute;
+      inset: 0;
+      background: rgba(17, 17, 17, 0.45);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 400;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+
+    .avatar-wrapper:hover .avatar-hover {
+      opacity: 1;
+    }
+
+    .card-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .name-input {
+      font-size: 15px;
+      font-weight: 500;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: var(--black);
+      width: 80%;
+    }
+
+    .btn-delete {
+      background: none;
+      border: none;
+      font-size: 16px;
+      color: #CCCCCC;
+      cursor: pointer;
+      padding: 2px 6px;
+    }
+
+    .btn-delete:hover {
+      color: var(--black);
+    }
+
+    .impression-input {
+      width: 100%;
+      background: var(--gray-light);
+      border: none;
+      padding: 9px 12px;
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--black);
+      outline: none;
+    }
+
+    .button-deck {
+      display: flex;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .action-btn {
+      flex: 1;
+      padding: 15px;
+      border: none;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.2s;
+    }
+
+    .btn-secondary {
+      background: var(--card-bg);
+      color: var(--black);
+    }
+
+    .btn-primary {
+      background: var(--green);
+      color: var(--black);
+    }
+
+    .page-footer {
+      margin-top: 28px;
+      padding: 0 10px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .footer-text {
+      font-size: 11px;
+      font-weight: 300;
+      color: var(--text-disclaimer);
+      line-height: 1.5;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(17, 17, 17, 0.6);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-card {
+      background: #fff;
+      max-width: 400px;
+      width: 100%;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-preview {
+      width: 100%;
+      max-height: 58vh;
+      object-fit: contain;
+    }
+
+    .modal-tip {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    canvas {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-shell">
+    <header class="header-card">
+      <div class="badge-pill">GMMTV MASCOT</div>
+      <h1>我對孫孫們的印象！</h1>
+      <p>挑選你想聊的孫孫，分享你眼中的他們（性格／初印象／名場面等）～</p>
+    </header>
+
+    <div class="config-box">
+      <input type="text" id="eventTitle" class="input-clean" value="我眼中的 GMMTV 孫孫們" placeholder="活動標題" />
+      <input type="text" id="userSignature" class="input-clean" value="@你的暱稱" placeholder="你的署名" style="max-width: 120px;" />
+    </div>
+
+    <!-- 34 隻孫孫候選池 -->
+    <div class="pool-card">
+      <div class="pool-title">
+        <span>快速加入孫孫候選池（共 34 隻）</span>
+        <span style="font-size: 11px;">點擊即加入</span>
+      </div>
+      <div class="chips-flow" id="mascotPool"></div>
+    </div>
+
+    <!-- 填寫清單 -->
+    <div class="list-container" id="itemList"></div>
+
+    <div class="button-deck">
+      <button class="action-btn btn-secondary" onclick="addNewItem()">＋ 自訂加一隻</button>
+      <button class="action-btn btn-primary" onclick="renderSharpCanvasCard()">✨ 生成分享圖</button>
+    </div>
+
+    <footer class="page-footer">
+      <p class="footer-text">本活動為粉絲自製非官方交流使用，非商業營利用途。角色圖片版權皆屬原著作權方所有。</p>
+      <p class="footer-text">This is an unofficial, non-profit fan-made activity for community interaction. All mascot and character copyrights belong to their respective owners.</p>
+    </footer>
+  </div>
+
+  <div class="modal" id="modalOverlay">
+    <div class="modal-card">
+      <img id="modalPreviewImg" class="modal-preview" alt="分享圖" />
+      <div class="modal-tip">長按圖片即可加入照片庫</div>
+      <div class="button-deck">
+        <button class="action-btn btn-secondary" onclick="closeModal()">關閉</button>
+        <button class="action-btn btn-primary" onclick="downloadImage()">下載圖片</button>
+      </div>
+    </div>
+  </div>
+
+  <canvas id="exportCanvas"></canvas>
+
+  <script>
+    // 34 隻孫孫完整清單（只顯示純名字，檔案路徑精準對應）
+    const DEFAULT_MASCOTS = [
+      { name: "KING MAN", img: "001-KING MAN.JPG" },
+      { name: "BABII", img: "002-BABII.JPG" },
+      { name: "POLCASAN", img: "003-POLCASAN.JPG" },
+      { name: "MR. SATURNWORLD", img: "004-MR. SATURNWORLD.JPG" },
+      { name: "PAODY", img: "005-PAODY.JPG" },
+      { name: "PERMPOON", img: "006-PERMPOON.JPG" },
+      { name: "TOMAFOX", img: "007-TOMAFOX.JPG" },
+      { name: "JAIDEE", img: "008-JAIDEE.JPG" },
+      { name: "AVOCEAN", img: "009-AVOCEAN.JPG" },
+      { name: "YUZU MUMU", img: "010-YUZU MUMU.JPG" },
+      { name: "LOOK KHUNNOO", img: "011-LOOK KHUNNOO.JPG" },
+      { name: "SAMRUAY", img: "012-SAMRUAY.JPG" },
+      { name: "NONG NOOONG", img: "013-NONG NOOONG.JPG" },
+      { name: "DOMIIA", img: "014-DOMIIA.JPG" },
+      { name: "WESLEY", img: "015-WESLEY.JPG" },
+      { name: "GUINZLY", img: "016-GUINZLY.JPG" },
+      { name: "JUMMO", img: "017-JUMMO.JPG" },
+      { name: "MOMO", img: "018-MOMO.JPG" },
+      { name: "CERI", img: "019-CERI.JPG" },
+      { name: "REXXA", img: "020-REXXA.JPG" },
+      { name: "PONPON", img: "021-PONPON.JPG" },
+      { name: "TINGTING", img: "022-TINGTING.jpg" },
+      { name: "MUVMUV", img: "023-MUVMUV.JPG" },
+      { name: "LUNAR", img: "024-LUNAR.JPG" },
+      { name: "ANY", img: "025-ANY.JPG" },
+      { name: "VIMMY", img: "026-VIMMY.JPG" },
+      { name: "JEWEL", img: "027-JEWEL.JPG" },
+      { name: "METAA", img: "028-METAA.JPG" },
+      { name: "NILKNHAKE", img: "029-NILKNHAKE.JPG" },
+      { name: "SMYLE", img: "030-SMYLE.JPG" },
+      { name: "NEONA", img: "031-NEONA.JPG" },
+      { name: "RENJIN", img: "032-RENJIN.jpg" },
+      { name: "LYKYOU", img: "033-LYKYOU.JPG" },
+      { name: "FLAREY", img: "034-FLAREY.JPG" }
+    ];
+
+    // 預設列出前兩隻
+    let currentItems = [
+      { name: DEFAULT_MASCOTS[0].name, img: DEFAULT_MASCOTS[0].img, impression: "" },
+      { name: DEFAULT_MASCOTS[1].name, img: DEFAULT_MASCOTS[1].img, impression: "" }
+    ];
+
+    let lastGeneratedBlob = null;
+
+    function renderPool() {
+      const pool = document.getElementById("mascotPool");
+      pool.innerHTML = "";
+      DEFAULT_MASCOTS.forEach((m) => {
+        const btn = document.createElement("button");
+        btn.className = "chip-item";
+        btn.innerHTML = `<img src="${encodeURI(m.img)}" alt="${m.name}" loading="lazy" /><span>${m.name}</span>`;
+        btn.onclick = () => {
+          currentItems.push({ name: m.name, img: m.img, impression: "" });
+          renderList();
+        };
+        pool.appendChild(btn);
+      });
+    }
+
+    function renderList() {
+      const listEl = document.getElementById("itemList");
+      listEl.innerHTML = "";
+
+      currentItems.forEach((item, index) => {
+        const card = document.createElement("div");
+        card.className = "impression-card";
+        card.innerHTML = `
+          <div class="avatar-wrapper" onclick="triggerUpload(${index})">
+            <img src="${encodeURI(item.img)}" id="img-${index}" />
+            <div class="avatar-hover">換圖</div>
+            <input type="file" id="file-${index}" accept="image/*" style="display:none;" onchange="handleFile(event, ${index})" />
+          </div>
+          <div class="card-body">
+            <div class="card-top">
+              <input type="text" class="name-input" value="${item.name}" oninput="currentItems[${index}].name = this.value" placeholder="孫孫名稱" />
+              <button class="btn-delete" onclick="removeItem(${index})">✕</button>
+            </div>
+            <input type="text" class="impression-input" value="${item.impression}" oninput="currentItems[${index}].impression = this.value" placeholder="分享性格、初印象、名場面等..." />
+          </div>
+        `;
+        listEl.appendChild(card);
+      });
+    }
+
+    function triggerUpload(index) {
+      document.getElementById(`file-${index}`).click();
+    }
+
+    function handleFile(event, index) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          currentItems[index].img = e.target.result;
+          renderList();
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function addNewItem() {
+      currentItems.push({
+        name: `孫孫 ${currentItems.length + 1}`,
+        img: "https://via.placeholder.com/150/EEEEEE/999999?text=%3F",
+        impression: ""
+      });
+      renderList();
+    }
+
+    function removeItem(index) {
+      if (currentItems.length <= 1) return;
+      currentItems.splice(index, 1);
+      renderList();
+    }
+
+    // Canvas 生成
+    async function renderSharpCanvasCard() {
+      const canvas = document.getElementById("exportCanvas");
+      const ctx = canvas.getContext("2d");
+
+      const width = 1080;
+      const cardHeight = 154;
+      const headerH = 250;
+      const footerH = 150;
+      const margin = 50;
+      const gap = 16;
+
+      const totalH = headerH + (currentItems.length * (cardHeight + gap)) + footerH;
+      canvas.width = width;
+      canvas.height = totalH;
+
+      ctx.fillStyle = "#F7F7F7";
+      ctx.fillRect(0, 0, width, totalH);
+
+      const boxW = width - (margin * 2);
+
+      // 頂部純白卡
+      ctx.fillStyle = "#FFFFFF";
+      ctx.fillRect(margin, 46, boxW, 164);
+
+      // 黑底白字標籤
+      ctx.fillStyle = "#111111";
+      ctx.fillRect(margin + 36, 76, 146, 30);
+      ctx.fillStyle = "#FFFFFF";
+      ctx.font = "500 13px 'Plus Jakarta Sans', sans-serif";
+      ctx.fillText("GMMTV MASCOT", margin + 48, 96);
+
+      // 主標題
+      const title = document.getElementById("eventTitle").value || "我眼中的 GMMTV 孫孫們";
+      ctx.fillStyle = "#111111";
+      ctx.font = "500 42px 'Plus Jakarta Sans', 'Noto Sans TC', sans-serif";
+      ctx.fillText(title, margin + 36, 164);
+
+      // 署名
+      const sig = document.getElementById("userSignature").value || "@匿名粉絲";
+      ctx.fillStyle = "#888888";
+      ctx.font = "400 22px 'Noto Sans TC', sans-serif";
+      ctx.textAlign = "right";
+      ctx.fillText(sig, margin + boxW - 36, 164);
+      ctx.textAlign = "left";
+
+      let startY = headerH;
+
+      for (let i = 0; i < currentItems.length; i++) {
+        const item = currentItems[i];
+        const cardY = startY + (i * (cardHeight + gap));
+
+        ctx.fillStyle = "#FFFFFF";
+        ctx.fillRect(margin, cardY, boxW, cardHeight);
+
+        const avatarSize = 114;
+        const avatarX = margin + 20;
+        const avatarY = cardY + 20;
+
+        ctx.fillStyle = "#EEEEEE";
+        ctx.fillRect(avatarX, avatarY, avatarSize, avatarSize);
+
+        try {
+          const imgObj = await loadImage(item.img);
+          ctx.drawImage(imgObj, avatarX, avatarY, avatarSize, avatarSize);
+        } catch (e) {
+          ctx.fillStyle = "#AAAAAA";
+          ctx.font = "500 36px sans-serif";
+          ctx.fillText("?", avatarX + 46, avatarY + 70);
+        }
+
+        const textStartX = avatarX + avatarSize + 26;
+        const maxTextW = boxW - avatarSize - 74;
+
+        ctx.fillStyle = "#111111";
+        ctx.font = "500 28px 'Noto Sans TC', sans-serif";
+        ctx.fillText(item.name || `孫孫 ${i + 1}`, textStartX, cardY + 52);
+
+        const bubbleY = cardY + 72;
+        const bubbleH = 54;
+        ctx.fillStyle = "#F7F7F7";
+        ctx.fillRect(textStartX, bubbleY, maxTextW, bubbleH);
+
+        ctx.fillStyle = "#333333";
+        ctx.font = "300 21px 'Noto Sans TC', sans-serif";
+        const txt = item.impression || "(未填寫)";
+        const clipped = fitText(ctx, txt, maxTextW - 28);
+        ctx.fillText(clipped, textStartX + 16, bubbleY + 34);
+      }
+
+      // 底部 Hashtag 與宣告
+      const footerBaseY = totalH - 95;
+      ctx.fillStyle = "#888888";
+      ctx.font = "400 18px 'Noto Sans TC', sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("#GMMTVMascot #我眼中的GMMTV孫孫們", width / 2, footerBaseY);
+
+      ctx.fillStyle = "#AAAAAA";
+      ctx.font = "300 13px 'Noto Sans TC', sans-serif";
+      ctx.fillText("本活動為粉絲自製非官方交流使用，非商業營利用途。角色圖片版權皆屬原著作權方所有。", width / 2, footerBaseY + 28);
+
+      ctx.font = "300 11px 'Plus Jakarta Sans', sans-serif";
+      ctx.fillText("Unofficial & non-profit fan-made activity. All mascot copyrights belong to their respective owners.", width / 2, footerBaseY + 48);
+      ctx.textAlign = "left";
+
+      canvas.toBlob((blob) => {
+        lastGeneratedBlob = blob;
+        document.getElementById("modalPreviewImg").src = URL.createObjectURL(blob);
+        document.getElementById("modalOverlay").style.display = "flex";
+      }, "image/png");
+    }
+
+    function loadImage(src) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.crossOrigin = "anonymous";
+        img.onload = () => resolve(img);
+        img.onerror = () => reject();
+        img.src = src;
+      });
+    }
+
+    function fitText(ctx, text, maxW) {
+      if (ctx.measureText(text).width <= maxW) return text;
+      let str = text;
+      while (str.length > 0 && ctx.measureText(str + "...").width > maxW) {
+        str = str.slice(0, -1);
+      }
+      return str + "...";
+    }
+
+    function downloadImage() {
+      if (!lastGeneratedBlob) return;
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(lastGeneratedBlob);
+      a.download = "GMMTV-Mascot-Impression.png";
+      a.click();
+    }
+
+    function closeModal() {
+      document.getElementById("modalOverlay").style.display = "none";
+    }
+
+    renderPool();
+    renderList();
+  </script>
+</body>
+</html>
