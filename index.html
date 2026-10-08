@@ -421,7 +421,6 @@
   <canvas id="exportCanvas"></canvas>
 
   <script>
-    // 多語言詞典
     const I18N = {
       zh: {
         pageTitle: "我對孫孫們的印象！(づ′▽`)づ | GMMTV Mascot",
@@ -530,7 +529,6 @@
       document.getElementById("uiMainTitle").innerText = t.mainTitle;
       document.getElementById("uiSubTitle").innerText = t.subTitle;
 
-      // 如果尚未手動修改則更新預設值
       const titleInput = document.getElementById("eventTitle");
       if (titleInput.value === I18N.zh.eventTitle || titleInput.value === I18N.en.eventTitle) {
         titleInput.value = t.eventTitle;
@@ -629,7 +627,7 @@
       renderList();
     }
 
-    // Canvas 渲染
+    // Canvas 渲染：緊湊精簡版標題區
     async function renderSharpCanvasCard() {
       const t = I18N[currentLang];
       const canvas = document.getElementById("exportCanvas");
@@ -637,8 +635,8 @@
 
       const width = 1080;
       const cardHeight = 154;
-      const headerH = 250;
-      const footerH = 110; // 去掉 hashtag 後精確收攏底部高度
+      const headerH = 190; // 由 250px 縮小至 190px，更精練俐落
+      const footerH = 100;
       const margin = 50;
       const gap = 16;
 
@@ -651,19 +649,21 @@
 
       const boxW = width - (margin * 2);
 
-      // 頂部純白直角卡片
+      // 頂部純白直角卡片（高度縮小為 120px）
+      const headerCardY = 36;
+      const headerCardH = 120;
       ctx.fillStyle = "#FFFFFF";
-      ctx.fillRect(margin, 46, boxW, 164);
+      ctx.fillRect(margin, headerCardY, boxW, headerCardH);
 
-      // GMMTV MASCOT 黑底白字標籤（文字居中貼合）
+      // GMMTV MASCOT 黑底白字小標籤（微縮字型與間距）
       const tagText = "GMMTV MASCOT";
-      ctx.font = "500 16px 'Plus Jakarta Sans', sans-serif";
+      ctx.font = "500 13px 'Plus Jakarta Sans', sans-serif";
       const tagTextWidth = ctx.measureText(tagText).width;
-      const tagPaddingX = 14;
+      const tagPaddingX = 10;
       const tagW = tagTextWidth + (tagPaddingX * 2);
-      const tagH = 32;
-      const tagX = margin + 36;
-      const tagY = 74;
+      const tagH = 26;
+      const tagX = margin + 28;
+      const tagY = headerCardY + 20;
 
       ctx.fillStyle = "#111111";
       ctx.fillRect(tagX, tagY, tagW, tagH);
@@ -673,20 +673,20 @@
       ctx.textBaseline = "middle";
       ctx.fillText(tagText, tagX + (tagW / 2), tagY + (tagH / 2) + 1);
 
-      // 主標題
+      // 主標題（微縮至 32px，緊緻貼合）
       ctx.textAlign = "left";
       ctx.textBaseline = "alphabetic";
       const title = document.getElementById("eventTitle").value || t.eventTitle;
       ctx.fillStyle = "#111111";
-      ctx.font = "500 40px 'Plus Jakarta Sans', 'Noto Sans TC', sans-serif";
-      ctx.fillText(title, margin + 36, 164);
+      ctx.font = "500 32px 'Plus Jakarta Sans', 'Noto Sans TC', sans-serif";
+      ctx.fillText(title, margin + 28, headerCardY + 86);
 
-      // 署名
+      // 署名（微縮至 19px）
       const sig = document.getElementById("userSignature").value || t.anonSig;
       ctx.fillStyle = "#888888";
-      ctx.font = "400 22px 'Noto Sans TC', sans-serif";
+      ctx.font = "400 19px 'Noto Sans TC', sans-serif";
       ctx.textAlign = "right";
-      ctx.fillText(sig, margin + boxW - 36, 164);
+      ctx.fillText(sig, margin + boxW - 28, headerCardY + 86);
       ctx.textAlign = "left";
 
       let startY = headerH;
@@ -754,15 +754,15 @@
         ctx.fillText(clipped, textStartX + 16, bubbleY + 34);
       }
 
-      // 底部免責宣告（無 Hashtag，雙語開頭為「非官方，粉絲自製，非營利...」）
-      const footerBaseY = totalH - 58;
+      // 底部免責宣告
+      const footerBaseY = totalH - 52;
       ctx.fillStyle = "#AAAAAA";
       ctx.textAlign = "center";
       ctx.font = "300 13px 'Noto Sans TC', sans-serif";
       ctx.fillText(t.disclaimerZh, width / 2, footerBaseY);
 
       ctx.font = "300 11px 'Plus Jakarta Sans', sans-serif";
-      ctx.fillText(t.disclaimerEn, width / 2, footerBaseY + 20);
+      ctx.fillText(t.disclaimerEn, width / 2, footerBaseY + 18);
       ctx.textAlign = "left";
 
       canvas.toBlob((blob) => {
