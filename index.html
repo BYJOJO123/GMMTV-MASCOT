@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>我對孫孫們的印象！(づ′▽`)づ| GMMTV Mascot</title>
+  <title>我對孫孫們的印象！(づ′▽`)づ | GMMTV Mascot</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
@@ -28,6 +28,11 @@
       border-radius: 0 !important;
     }
 
+    /* 圓形頭像例外 */
+    .avatar-circle, .avatar-circle img, .chip-item img {
+      border-radius: 50% !important;
+    }
+
     body {
       background-color: var(--bg);
       color: var(--black);
@@ -46,16 +51,23 @@
       gap: 14px;
     }
 
+    /* 頂部直角卡片 */
     .header-card {
       background: var(--card-bg);
-      padding: 26px 22px 20px;
+      padding: 24px 22px 20px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
+      position: relative;
+    }
+
+    .header-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     .badge-pill {
-      align-self: flex-start;
       background: var(--green);
       color: var(--black);
       font-size: 11px;
@@ -64,12 +76,27 @@
       letter-spacing: 0.5px;
     }
 
+    /* 語言切換鈕 */
+    .lang-toggle-btn {
+      background: var(--gray-light);
+      border: none;
+      padding: 4px 10px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--black);
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .lang-toggle-btn:hover {
+      background: var(--green);
+    }
+
     .header-card h1 {
-      font-size: 24px;
+      font-size: 22px;
       font-weight: 500;
       letter-spacing: -0.3px;
       color: var(--black);
-      margin-top: 2px;
     }
 
     .header-card p {
@@ -79,6 +106,7 @@
       line-height: 1.5;
     }
 
+    /* 設定列 */
     .config-box {
       background: var(--card-bg);
       padding: 12px;
@@ -97,6 +125,7 @@
       width: 100%;
     }
 
+    /* 快捷候選池 */
     .pool-card {
       background: var(--card-bg);
       padding: 16px;
@@ -148,6 +177,7 @@
       display: block;
     }
 
+    /* 填寫列表 */
     .list-container {
       display: flex;
       flex-direction: column;
@@ -162,6 +192,7 @@
       align-items: center;
     }
 
+    /* 圓形頭像容器 */
     .avatar-wrapper {
       width: 72px;
       height: 72px;
@@ -194,6 +225,7 @@
       justify-content: center;
       opacity: 0;
       transition: opacity 0.15s;
+      border-radius: 50% !important;
     }
 
     .avatar-wrapper:hover .avatar-hover {
@@ -247,6 +279,7 @@
       outline: none;
     }
 
+    /* 底部操作鈕 */
     .button-deck {
       display: flex;
       gap: 10px;
@@ -338,9 +371,12 @@
 
   <div class="app-shell">
     <header class="header-card">
-      <div class="badge-pill">GMMTV MASCOT</div>
-      <h1>我對孫孫們的印象！</h1>
-      <p>挑選你想聊的孫孫，分享你眼中的他們（性格／初印象／名場面等）～</p>
+      <div class="header-top-bar">
+        <span class="badge-pill">GMMTV MASCOT</span>
+        <button class="lang-toggle-btn" id="langBtn" onclick="toggleLanguage()">中文 / EN</button>
+      </div>
+      <h1 id="uiMainTitle">我對孫孫們的印象！(づ′▽`)づ</h1>
+      <p id="uiSubTitle">挑選你想聊的孫孫，分享你眼中的他們（性格／初印象／名場面等）～</p>
     </header>
 
     <div class="config-box">
@@ -351,8 +387,8 @@
     <!-- 34 隻孫孫候選池 -->
     <div class="pool-card">
       <div class="pool-title">
-        <span>快速加入孫孫候選池（共 34 隻）</span>
-        <span style="font-size: 11px;">點擊即加入</span>
+        <span id="uiPoolTitle">快速加入孫孫候選池（共 34 隻）</span>
+        <span id="uiPoolHint" style="font-size: 11px;">點擊即加入</span>
       </div>
       <div class="chips-flow" id="mascotPool"></div>
     </div>
@@ -361,23 +397,23 @@
     <div class="list-container" id="itemList"></div>
 
     <div class="button-deck">
-      <button class="action-btn btn-secondary" onclick="addNewItem()">＋ 自訂加一隻</button>
-      <button class="action-btn btn-primary" onclick="renderSharpCanvasCard()">✨ 生成分享圖</button>
+      <button class="action-btn btn-secondary" id="btnAddItem" onclick="addNewItem()">＋ 自訂加一隻</button>
+      <button class="action-btn btn-primary" id="btnExport" onclick="renderSharpCanvasCard()">✨ 生成分享圖</button>
     </div>
 
     <footer class="page-footer">
-      <p class="footer-text">本活動為粉絲自製，非官方，非商業營利用途。角色圖片版權皆屬原著作權方所有。</p>
-      <p class="footer-text">This is an unofficial, non-profit fan-made activity for community interaction. All mascot and character copyrights belong to their respective owners.</p>
+      <p class="footer-text" id="uiFooterZh">非官方，粉絲自製，非營利交流使用。圖片版權皆屬原官方所有。</p>
+      <p class="footer-text" id="uiFooterEn">Unofficial, fan-made, non-profit project. All rights belong to original owners.</p>
     </footer>
   </div>
 
   <div class="modal" id="modalOverlay">
     <div class="modal-card">
       <img id="modalPreviewImg" class="modal-preview" alt="分享圖" />
-      <div class="modal-tip">長按圖片即可加入照片庫</div>
+      <div class="modal-tip" id="uiModalTip">長按圖片即可加入照片庫</div>
       <div class="button-deck">
-        <button class="action-btn btn-secondary" onclick="closeModal()">關閉</button>
-        <button class="action-btn btn-primary" onclick="downloadImage()">下載圖片</button>
+        <button class="action-btn btn-secondary" id="btnModalClose" onclick="closeModal()">關閉</button>
+        <button class="action-btn btn-primary" id="btnModalDownload" onclick="downloadImage()">下載圖片</button>
       </div>
     </div>
   </div>
@@ -385,7 +421,60 @@
   <canvas id="exportCanvas"></canvas>
 
   <script>
-    // 34 隻孫孫完整清單（只顯示純名字，檔案路徑精準對應）
+    // 多語言詞典
+    const I18N = {
+      zh: {
+        pageTitle: "我對孫孫們的印象！(づ′▽`)づ | GMMTV Mascot",
+        mainTitle: "我對孫孫們的印象！(づ′▽`)づ",
+        subTitle: "挑選你想聊的孫孫，分享你眼中的他們（性格／初印象／名場面等）～",
+        eventTitle: "我眼中的 GMMTV 孫孫們",
+        eventTitlePlaceholder: "活動標題",
+        signature: "@你的暱稱",
+        signaturePlaceholder: "你的署名",
+        anonSig: "@匿名粉絲",
+        poolTitle: "快速加入孫孫候選池（共 34 隻）",
+        poolHint: "點擊即加入",
+        btnAdd: "＋ 自訂加一隻",
+        btnExport: "✨ 生成分享圖",
+        changeImg: "換圖",
+        namePlaceholder: "孫孫名稱",
+        impressionPlaceholder: "分享性格、初印象、名場面等...",
+        unfilled: "(未填寫)",
+        newMascot: "新孫孫",
+        modalTip: "長按圖片即可加入照片庫",
+        btnClose: "關閉",
+        btnDownload: "下載圖片",
+        disclaimerZh: "非官方，粉絲自製，非營利交流使用。圖片版權皆屬原官方所有。",
+        disclaimerEn: "Unofficial, fan-made, non-profit project. All rights belong to original owners."
+      },
+      en: {
+        pageTitle: "My Impressions of Mascots! (づ′▽`)づ | GMMTV Mascot",
+        mainTitle: "My Impressions of Mascots! (づ′▽`)づ",
+        subTitle: "Pick mascots to share your thoughts—first impressions, personality, iconic moments, etc.",
+        eventTitle: "GMMTV Mascot Impressions",
+        eventTitlePlaceholder: "Title",
+        signature: "@YourName",
+        signaturePlaceholder: "Signature",
+        anonSig: "@Anonymous",
+        poolTitle: "Mascot Selection (34 Mascots)",
+        poolHint: "Click to add",
+        btnAdd: "＋ Add Custom One",
+        btnExport: "✨ Export Card",
+        changeImg: "Change",
+        namePlaceholder: "Mascot Name",
+        impressionPlaceholder: "Personality, first impression, favorite moment...",
+        unfilled: "(No impression written)",
+        newMascot: "New Mascot",
+        modalTip: "Long-press image to save to photo library",
+        btnClose: "Close",
+        btnDownload: "Download",
+        disclaimerZh: "非官方，粉絲自製，非營利交流使用。圖片版權皆屬原官方所有。",
+        disclaimerEn: "Unofficial, fan-made, non-profit project. All rights belong to original owners."
+      }
+    };
+
+    let currentLang = "zh";
+
     const DEFAULT_MASCOTS = [
       { name: "KING MAN", img: "001-KING MAN.JPG" },
       { name: "BABII", img: "002-BABII.JPG" },
@@ -423,13 +512,49 @@
       { name: "FLAREY", img: "034-FLAREY.JPG" }
     ];
 
-    // 預設列出前兩隻
     let currentItems = [
       { name: DEFAULT_MASCOTS[0].name, img: DEFAULT_MASCOTS[0].img, impression: "" },
       { name: DEFAULT_MASCOTS[1].name, img: DEFAULT_MASCOTS[1].img, impression: "" }
     ];
 
     let lastGeneratedBlob = null;
+
+    function toggleLanguage() {
+      currentLang = (currentLang === "zh") ? "en" : "zh";
+      applyLanguage();
+    }
+
+    function applyLanguage() {
+      const t = I18N[currentLang];
+      document.title = t.pageTitle;
+      document.getElementById("uiMainTitle").innerText = t.mainTitle;
+      document.getElementById("uiSubTitle").innerText = t.subTitle;
+
+      // 如果尚未手動修改則更新預設值
+      const titleInput = document.getElementById("eventTitle");
+      if (titleInput.value === I18N.zh.eventTitle || titleInput.value === I18N.en.eventTitle) {
+        titleInput.value = t.eventTitle;
+      }
+      titleInput.placeholder = t.eventTitlePlaceholder;
+
+      const sigInput = document.getElementById("userSignature");
+      if (sigInput.value === I18N.zh.signature || sigInput.value === I18N.en.signature) {
+        sigInput.value = t.signature;
+      }
+      sigInput.placeholder = t.signaturePlaceholder;
+
+      document.getElementById("uiPoolTitle").innerText = t.poolTitle;
+      document.getElementById("uiPoolHint").innerText = t.poolHint;
+      document.getElementById("btnAddItem").innerText = t.btnAdd;
+      document.getElementById("btnExport").innerText = t.btnExport;
+      document.getElementById("uiModalTip").innerText = t.modalTip;
+      document.getElementById("btnModalClose").innerText = t.btnClose;
+      document.getElementById("btnModalDownload").innerText = t.btnDownload;
+
+      document.getElementById("langBtn").innerText = currentLang === "zh" ? "中文 / EN" : "EN / 中文";
+
+      renderList();
+    }
 
     function renderPool() {
       const pool = document.getElementById("mascotPool");
@@ -447,6 +572,7 @@
     }
 
     function renderList() {
+      const t = I18N[currentLang];
       const listEl = document.getElementById("itemList");
       listEl.innerHTML = "";
 
@@ -454,17 +580,17 @@
         const card = document.createElement("div");
         card.className = "impression-card";
         card.innerHTML = `
-          <div class="avatar-wrapper" onclick="triggerUpload(${index})">
+          <div class="avatar-wrapper avatar-circle" onclick="triggerUpload(${index})">
             <img src="${encodeURI(item.img)}" id="img-${index}" />
-            <div class="avatar-hover">換圖</div>
+            <div class="avatar-hover">${t.changeImg}</div>
             <input type="file" id="file-${index}" accept="image/*" style="display:none;" onchange="handleFile(event, ${index})" />
           </div>
           <div class="card-body">
             <div class="card-top">
-              <input type="text" class="name-input" value="${item.name}" oninput="currentItems[${index}].name = this.value" placeholder="孫孫名稱" />
+              <input type="text" class="name-input" value="${item.name}" oninput="currentItems[${index}].name = this.value" placeholder="${t.namePlaceholder}" />
               <button class="btn-delete" onclick="removeItem(${index})">✕</button>
             </div>
-            <input type="text" class="impression-input" value="${item.impression}" oninput="currentItems[${index}].impression = this.value" placeholder="分享性格、初印象、名場面等..." />
+            <input type="text" class="impression-input" value="${item.impression}" oninput="currentItems[${index}].impression = this.value" placeholder="${t.impressionPlaceholder}" />
           </div>
         `;
         listEl.appendChild(card);
@@ -488,8 +614,9 @@
     }
 
     function addNewItem() {
+      const t = I18N[currentLang];
       currentItems.push({
-        name: `孫孫 ${currentItems.length + 1}`,
+        name: `${t.newMascot} ${currentItems.length + 1}`,
         img: "https://via.placeholder.com/150/EEEEEE/999999?text=%3F",
         impression: ""
       });
@@ -502,15 +629,16 @@
       renderList();
     }
 
-    // Canvas 生成
+    // Canvas 渲染
     async function renderSharpCanvasCard() {
+      const t = I18N[currentLang];
       const canvas = document.getElementById("exportCanvas");
       const ctx = canvas.getContext("2d");
 
       const width = 1080;
       const cardHeight = 154;
       const headerH = 250;
-      const footerH = 150;
+      const footerH = 110; // 去掉 hashtag 後精確收攏底部高度
       const margin = 50;
       const gap = 16;
 
@@ -523,25 +651,38 @@
 
       const boxW = width - (margin * 2);
 
-      // 頂部純白卡
+      // 頂部純白直角卡片
       ctx.fillStyle = "#FFFFFF";
       ctx.fillRect(margin, 46, boxW, 164);
 
-      // 黑底白字標籤
+      // GMMTV MASCOT 黑底白字標籤（文字居中貼合）
+      const tagText = "GMMTV MASCOT";
+      ctx.font = "500 16px 'Plus Jakarta Sans', sans-serif";
+      const tagTextWidth = ctx.measureText(tagText).width;
+      const tagPaddingX = 14;
+      const tagW = tagTextWidth + (tagPaddingX * 2);
+      const tagH = 32;
+      const tagX = margin + 36;
+      const tagY = 74;
+
       ctx.fillStyle = "#111111";
-      ctx.fillRect(margin + 36, 76, 146, 30);
+      ctx.fillRect(tagX, tagY, tagW, tagH);
+
       ctx.fillStyle = "#FFFFFF";
-      ctx.font = "500 13px 'Plus Jakarta Sans', sans-serif";
-      ctx.fillText("GMMTV MASCOT", margin + 48, 96);
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(tagText, tagX + (tagW / 2), tagY + (tagH / 2) + 1);
 
       // 主標題
-      const title = document.getElementById("eventTitle").value || "我眼中的 GMMTV 孫孫們";
+      ctx.textAlign = "left";
+      ctx.textBaseline = "alphabetic";
+      const title = document.getElementById("eventTitle").value || t.eventTitle;
       ctx.fillStyle = "#111111";
-      ctx.font = "500 42px 'Plus Jakarta Sans', 'Noto Sans TC', sans-serif";
+      ctx.font = "500 40px 'Plus Jakarta Sans', 'Noto Sans TC', sans-serif";
       ctx.fillText(title, margin + 36, 164);
 
       // 署名
-      const sig = document.getElementById("userSignature").value || "@匿名粉絲";
+      const sig = document.getElementById("userSignature").value || t.anonSig;
       ctx.fillStyle = "#888888";
       ctx.font = "400 22px 'Noto Sans TC', sans-serif";
       ctx.textAlign = "right";
@@ -554,57 +695,74 @@
         const item = currentItems[i];
         const cardY = startY + (i * (cardHeight + gap));
 
+        // 卡片底：直角白卡
         ctx.fillStyle = "#FFFFFF";
         ctx.fillRect(margin, cardY, boxW, cardHeight);
 
+        // 吉祥物頭像：正圓形裁切
         const avatarSize = 114;
         const avatarX = margin + 20;
         const avatarY = cardY + 20;
+        const radius = avatarSize / 2;
+        const centerX = avatarX + radius;
+        const centerY = avatarY + radius;
 
+        // 圓形淺灰底
         ctx.fillStyle = "#EEEEEE";
-        ctx.fillRect(avatarX, avatarY, avatarSize, avatarSize);
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+        ctx.fill();
 
         try {
           const imgObj = await loadImage(item.img);
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+          ctx.closePath();
+          ctx.clip();
           ctx.drawImage(imgObj, avatarX, avatarY, avatarSize, avatarSize);
+          ctx.restore();
         } catch (e) {
           ctx.fillStyle = "#AAAAAA";
           ctx.font = "500 36px sans-serif";
-          ctx.fillText("?", avatarX + 46, avatarY + 70);
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillText("?", centerX, centerY);
+          ctx.textAlign = "left";
+          ctx.textBaseline = "alphabetic";
         }
 
         const textStartX = avatarX + avatarSize + 26;
         const maxTextW = boxW - avatarSize - 74;
 
+        // 孫孫名字
         ctx.fillStyle = "#111111";
         ctx.font = "500 28px 'Noto Sans TC', sans-serif";
-        ctx.fillText(item.name || `孫孫 ${i + 1}`, textStartX, cardY + 52);
+        ctx.fillText(item.name || `${t.newMascot} ${i + 1}`, textStartX, cardY + 52);
 
+        // 印象文字底框（直角）
         const bubbleY = cardY + 72;
         const bubbleH = 54;
         ctx.fillStyle = "#F7F7F7";
         ctx.fillRect(textStartX, bubbleY, maxTextW, bubbleH);
 
+        // 印象文字
         ctx.fillStyle = "#333333";
         ctx.font = "300 21px 'Noto Sans TC', sans-serif";
-        const txt = item.impression || "(未填寫)";
+        const txt = item.impression || t.unfilled;
         const clipped = fitText(ctx, txt, maxTextW - 28);
         ctx.fillText(clipped, textStartX + 16, bubbleY + 34);
       }
 
-      // 底部 Hashtag 與宣告
-      const footerBaseY = totalH - 95;
-      ctx.fillStyle = "#888888";
-      ctx.font = "400 18px 'Noto Sans TC', sans-serif";
-      ctx.textAlign = "center";
-      ctx.fillText("#GMMTVMascot #我眼中的GMMTV孫孫們", width / 2, footerBaseY);
-
+      // 底部免責宣告（無 Hashtag，雙語開頭為「非官方，粉絲自製，非營利...」）
+      const footerBaseY = totalH - 58;
       ctx.fillStyle = "#AAAAAA";
+      ctx.textAlign = "center";
       ctx.font = "300 13px 'Noto Sans TC', sans-serif";
-      ctx.fillText("本活動為粉絲自製非官方交流使用，非商業營利用途。角色圖片版權皆屬原著作權方所有。", width / 2, footerBaseY + 28);
+      ctx.fillText(t.disclaimerZh, width / 2, footerBaseY);
 
       ctx.font = "300 11px 'Plus Jakarta Sans', sans-serif";
-      ctx.fillText("Unofficial & non-profit fan-made activity. All mascot copyrights belong to their respective owners.", width / 2, footerBaseY + 48);
+      ctx.fillText(t.disclaimerEn, width / 2, footerBaseY + 20);
       ctx.textAlign = "left";
 
       canvas.toBlob((blob) => {
@@ -637,7 +795,7 @@
       if (!lastGeneratedBlob) return;
       const a = document.createElement("a");
       a.href = URL.createObjectURL(lastGeneratedBlob);
-      a.download = "GMMTV-Mascot-Impression.png";
+      a.download = `GMMTV-Mascot-Impression-${currentLang}.png`;
       a.click();
     }
 
